@@ -30,7 +30,9 @@ COPY --from=build /app/dist /usr/share/nginx/html
 
 EXPOSE 80
 
+# Use 127.0.0.1 explicitly — BusyBox wget tries IPv6 first on `localhost`,
+# but nginx only binds IPv4 by default → "Connection refused" forever.
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s \
-  CMD wget -q -O - http://localhost/ >/dev/null || exit 1
+  CMD wget -q -O - http://127.0.0.1/ >/dev/null || exit 1
 
 CMD ["nginx", "-g", "daemon off;"]
