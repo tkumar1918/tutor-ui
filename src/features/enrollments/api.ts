@@ -17,7 +17,7 @@ export interface ListEnrollmentsParams {
 }
 
 export async function listEnrollments(params: ListEnrollmentsParams) {
-  const res = await api.get<ApiResponse<PageResponse<EnrollmentResponse>>>('/api/v1/enrollments', {
+  const res = await api.get<ApiResponse<PageResponse<EnrollmentResponse>>>('/v1/enrollments', {
     params: {
       ...pageableToParams(params.pageable),
       userId: params.userId,
@@ -29,7 +29,7 @@ export async function listEnrollments(params: ListEnrollmentsParams) {
 }
 
 export async function listMyEnrollments(params: { status?: EnrollmentStatus; pageable: Pageable }) {
-  const res = await api.get<ApiResponse<PageResponse<EnrollmentResponse>>>('/api/v1/enrollments/mine', {
+  const res = await api.get<ApiResponse<PageResponse<EnrollmentResponse>>>('/v1/enrollments/mine', {
     params: {
       ...pageableToParams(params.pageable),
       status: params.status,
@@ -43,7 +43,7 @@ export async function listCourseEnrollments(
   params: { status?: EnrollmentStatus; pageable: Pageable },
 ) {
   const res = await api.get<ApiResponse<PageResponse<EnrollmentResponse>>>(
-    `/api/v1/courses/${courseId}/enrollments`,
+    `/v1/courses/${courseId}/enrollments`,
     {
       params: {
         ...pageableToParams(params.pageable),
@@ -55,23 +55,23 @@ export async function listCourseEnrollments(
 }
 
 export async function getEnrollment(id: number) {
-  const res = await api.get<ApiResponse<EnrollmentResponse>>(`/api/v1/enrollments/${id}`)
+  const res = await api.get<ApiResponse<EnrollmentResponse>>(`/v1/enrollments/${id}`)
   return unwrap(res)
 }
 
 export async function createEnrollment(body: EnrollmentCreateRequest) {
-  const res = await api.post<ApiResponse<EnrollmentResponse>>('/api/v1/enrollments', body)
+  const res = await api.post<ApiResponse<EnrollmentResponse>>('/v1/enrollments', body)
   return unwrap(res)
 }
 
 export async function updateEnrollmentStatus(id: number, body: EnrollmentStatusUpdateRequest) {
   const res = await api.patch<ApiResponse<EnrollmentResponse>>(
-    `/api/v1/enrollments/${id}/status`,
+    `/v1/enrollments/${id}/status`,
     body,
   )
   return unwrap(res)
 }
 
 export async function deleteEnrollment(id: number) {
-  await api.delete(`/api/v1/enrollments/${id}`)
+  await api.delete(`/v1/enrollments/${id}`)
 }

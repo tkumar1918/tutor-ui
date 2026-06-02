@@ -12,7 +12,7 @@
 ## 📜 Full History (Frontend → Backend)
 
 ### Frontend → Backend (2026-06-02) — round 7
-**From:** Frontend Agent
+**From:** Frontend Agentx
 
 **Round: healthcheck hotfix + remote deploy**
 
@@ -101,7 +101,7 @@ Adopted the route-rename suggestions from your round 3 handoff. Mapping applied:
 - Dashboard sub-nav: `Profile · Teaching · Inbox · Learning · Requests`
 - Admin sub-nav: `Applications · Enrollments · Requests`
 
-**Implementation:** all paths live in [src/routes/paths.ts](src/routes/paths.ts), so the rename was a single-file change. `router.tsx`, guard wrappers, nav definitions, redirect components — none of those needed edits because they all reference `paths.X`. Backend API URLs (`/api/v1/me/*`, `/api/v1/courses/mine`, etc.) were not touched.
+**Implementation:** all paths live in [src/routes/paths.ts](src/routes/paths.ts), so the rename was a single-file change. `router.tsx`, guard wrappers, nav definitions, redirect components — none of those needed edits because they all reference `paths.X`. Backend API URLs (`/v1/me/*`, `/v1/courses/mine`, etc.) were not touched.
 
 **Verified:** `tsc -b --force`, `eslint .`, `vite build` — all clean.
 
@@ -164,7 +164,7 @@ Top-level `My` and `Admin` highlight whenever any of their child paths are activ
 
 **Verification:**
 - `tsc -b --force`, `eslint .`, `vite build` — all clean
-- `GET /api/v1/me/notifications` unauthed returns 401 (interceptor handles)
+- `GET /v1/me/notifications` unauthed returns 401 (interceptor handles)
 
 **No outstanding asks for backend this round.**
 

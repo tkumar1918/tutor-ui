@@ -16,7 +16,7 @@ export interface ListTutorsParams {
 }
 
 export async function listTutors(params: ListTutorsParams) {
-  const res = await api.get<ApiResponse<PageResponse<TutorProfileResponse>>>('/api/v1/tutors', {
+  const res = await api.get<ApiResponse<PageResponse<TutorProfileResponse>>>('/v1/tutors', {
     params: {
       ...pageableToParams(params.pageable),
       expertise: params.expertise,
@@ -27,19 +27,19 @@ export async function listTutors(params: ListTutorsParams) {
 }
 
 export async function getTutor(id: number) {
-  const res = await api.get<ApiResponse<TutorProfileResponse>>(`/api/v1/tutors/${id}`)
+  const res = await api.get<ApiResponse<TutorProfileResponse>>(`/v1/tutors/${id}`)
   return unwrap(res)
 }
 
 export async function getTutorCourses(id: number, pageable: Pageable) {
   const res = await api.get<ApiResponse<PageResponse<CourseResponse>>>(
-    `/api/v1/tutors/${id}/courses`,
+    `/v1/tutors/${id}/courses`,
     { params: pageableToParams(pageable) },
   )
   return unwrap(res)
 }
 
 export async function updateMyTutorProfile(body: TutorUpdateRequest) {
-  const res = await api.put<ApiResponse<TutorProfileResponse>>('/api/v1/tutors/me', body)
+  const res = await api.put<ApiResponse<TutorProfileResponse>>('/v1/tutors/me', body)
   return unwrap(res)
 }

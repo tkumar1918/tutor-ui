@@ -15,7 +15,7 @@ export interface ListApplicationsParams {
 
 export async function listApplications(params: ListApplicationsParams) {
   const res = await api.get<ApiResponse<PageResponse<TutorProfileResponse>>>(
-    '/api/v1/admin/tutor-applications',
+    '/v1/admin/tutor-applications',
     {
       params: {
         ...pageableToParams(params.pageable),
@@ -28,7 +28,7 @@ export async function listApplications(params: ListApplicationsParams) {
 
 export async function reviewApplication(id: number, body: TutorApplicationReviewRequest) {
   const res = await api.post<ApiResponse<TutorProfileResponse>>(
-    `/api/v1/admin/tutor-applications/${id}/review`,
+    `/v1/admin/tutor-applications/${id}/review`,
     body,
   )
   return unwrap(res)

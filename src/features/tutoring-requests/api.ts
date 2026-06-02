@@ -28,7 +28,7 @@ export interface ListAllParams {
 
 export async function createTutoringRequest(body: TutoringRequestCreateRequest) {
   const res = await api.post<ApiResponse<TutoringRequestResponse>>(
-    '/api/v1/tutoring-requests',
+    '/v1/tutoring-requests',
     body,
   )
   return unwrap(res)
@@ -36,7 +36,7 @@ export async function createTutoringRequest(body: TutoringRequestCreateRequest) 
 
 export async function listMyTutoringRequests(params: ListMyRequestsParams) {
   const res = await api.get<ApiResponse<PageResponse<TutoringRequestResponse>>>(
-    '/api/v1/tutoring-requests/mine',
+    '/v1/tutoring-requests/mine',
     { params: { ...pageableToParams(params.pageable), status: params.status } },
   )
   return unwrap(res)
@@ -44,7 +44,7 @@ export async function listMyTutoringRequests(params: ListMyRequestsParams) {
 
 export async function listIncomingTutoringRequests(params: ListIncomingParams) {
   const res = await api.get<ApiResponse<PageResponse<TutoringRequestResponse>>>(
-    '/api/v1/tutoring-requests/incoming',
+    '/v1/tutoring-requests/incoming',
     { params: { ...pageableToParams(params.pageable), status: params.status } },
   )
   return unwrap(res)
@@ -52,7 +52,7 @@ export async function listIncomingTutoringRequests(params: ListIncomingParams) {
 
 export async function getTutoringRequest(id: number) {
   const res = await api.get<ApiResponse<TutoringRequestResponse>>(
-    `/api/v1/tutoring-requests/${id}`,
+    `/v1/tutoring-requests/${id}`,
   )
   return unwrap(res)
 }
@@ -62,19 +62,19 @@ export async function respondToTutoringRequest(
   body: TutoringRequestRespondRequest,
 ) {
   const res = await api.patch<ApiResponse<TutoringRequestResponse>>(
-    `/api/v1/tutoring-requests/${id}`,
+    `/v1/tutoring-requests/${id}`,
     body,
   )
   return unwrap(res)
 }
 
 export async function cancelTutoringRequest(id: number) {
-  await api.delete(`/api/v1/tutoring-requests/${id}`)
+  await api.delete(`/v1/tutoring-requests/${id}`)
 }
 
 export async function listAllTutoringRequests(params: ListAllParams) {
   const res = await api.get<ApiResponse<PageResponse<TutoringRequestResponse>>>(
-    '/api/v1/admin/tutoring-requests',
+    '/v1/admin/tutoring-requests',
     {
       params: {
         ...pageableToParams(params.pageable),
