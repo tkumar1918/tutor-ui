@@ -19,7 +19,7 @@ export interface ListCoursesParams {
 }
 
 export async function listCourses(params: ListCoursesParams) {
-  const res = await api.get<ApiResponse<PageResponse<CourseResponse>>>('/api/v1/courses', {
+  const res = await api.get<ApiResponse<PageResponse<CourseResponse>>>('/v1/courses', {
     params: {
       ...pageableToParams(params.pageable),
       tutorId: params.tutorId,
@@ -32,27 +32,27 @@ export async function listCourses(params: ListCoursesParams) {
 }
 
 export async function listMyCourses(pageable: Pageable) {
-  const res = await api.get<ApiResponse<PageResponse<CourseResponse>>>('/api/v1/courses/mine', {
+  const res = await api.get<ApiResponse<PageResponse<CourseResponse>>>('/v1/courses/mine', {
     params: pageableToParams(pageable),
   })
   return unwrap(res)
 }
 
 export async function getCourse(id: number) {
-  const res = await api.get<ApiResponse<CourseResponse>>(`/api/v1/courses/${id}`)
+  const res = await api.get<ApiResponse<CourseResponse>>(`/v1/courses/${id}`)
   return unwrap(res)
 }
 
 export async function createCourse(body: CourseCreateRequest) {
-  const res = await api.post<ApiResponse<CourseResponse>>('/api/v1/courses', body)
+  const res = await api.post<ApiResponse<CourseResponse>>('/v1/courses', body)
   return unwrap(res)
 }
 
 export async function updateCourse(id: number, body: CourseUpdateRequest) {
-  const res = await api.put<ApiResponse<CourseResponse>>(`/api/v1/courses/${id}`, body)
+  const res = await api.put<ApiResponse<CourseResponse>>(`/v1/courses/${id}`, body)
   return unwrap(res)
 }
 
 export async function deleteCourse(id: number) {
-  await api.delete(`/api/v1/courses/${id}`)
+  await api.delete(`/v1/courses/${id}`)
 }

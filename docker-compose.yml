@@ -1,21 +1,29 @@
 # Frontend-only compose. Pair with the backend repo's own compose
 # (run them in two terminals — they're intentionally independent).
 #
-# Vite bakes VITE_API_BASE_URL at build time, so changing it requires
-# a rebuild. Override via .env (copied from .env.example) or env var
-# at the shell.
+# Vite bakes VITE_API_BASE_URL at build time. Default `/api` keeps the
+# bundle host-agnostic — nginx in this container reverse-proxies
+# /api/* to the backend container over the shared docker network below.
+# Override via .env to point the SPA at a different host instead.
 
 services:
   frontend:
     build:
       context: .
       args:
-        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-http://localhost:8080}
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-/api}
     image: tutor-ui:dev
     container_name: tutor-ui
     ports:
       - "3000:80"
     restart: unless-stopped
+    networks:
+      # Own network for this stack (default), plus the backend's network
+      # so nginx can resolve `backend` and proxy /api/* to it. The backend
+      # network is declared external — `docker compose up` in the backend
+      # repo must run first (or at least once) to create it.
+      - default
+      - tutor-api_default
     healthcheck:
       # 127.0.0.1 (not localhost) — BusyBox wget tries IPv6 first and
       # nginx only binds IPv4 by default → "Connection refused" forever.
@@ -24,3 +32,7 @@ services:
       timeout: 3s
       start_period: 5s
       retries: 3
+
+networks:
+  tutor-api_default:
+    external: true
