@@ -1,15 +1,16 @@
-# Frontend-only compose. Backend is at its own public host
-# (tutor-api.webspacehub.in) — no shared docker network needed.
+# Frontend-only compose. The bundle calls `/api/...` on its own origin
+# (tutor.webspacehub.in) — host nginx proxies `/api` through to the
+# backend on the box, so no shared docker network is needed here.
 #
 # Vite bakes VITE_API_BASE_URL at build time. Override via .env or
-# shell to point at a different backend.
+# shell to point at a different host.
 
 services:
   frontend:
     build:
       context: .
       args:
-        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-https://tutor-api.webspacehub.in/api}
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-https://tutor.webspacehub.in/api}
     image: tutor-ui:dev
     container_name: tutor-ui
     ports:
