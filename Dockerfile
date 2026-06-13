@@ -14,7 +14,7 @@ COPY package.json package-lock.json ./
 RUN npm install --no-audit --no-fund
 
 # Vite bakes env vars at build time. Pass via --build-arg.
-ARG VITE_API_BASE_URL=https://tutor-api.webspacehub.in/api
+ARG VITE_API_BASE_URL=/api
 ENV VITE_API_BASE_URL=$VITE_API_BASE_URL
 
 COPY . .
