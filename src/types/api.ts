@@ -4,12 +4,6 @@ export type Expertise = (typeof EXPERTISE)[number]
 export const SUBJECT = ['MATH', 'PHYSICS', 'CHEMISTRY', 'BIOLOGY', 'COMPUTER_SCIENCE', 'ENGLISH', 'HISTORY', 'OTHER'] as const
 export type Subject = (typeof SUBJECT)[number]
 
-export const LEVEL = ['BEGINNER', 'INTERMEDIATE', 'ADVANCED'] as const
-export type Level = (typeof LEVEL)[number]
-
-export const ENROLLMENT_STATUS = ['ACTIVE', 'COMPLETED', 'CANCELLED'] as const
-export type EnrollmentStatus = (typeof ENROLLMENT_STATUS)[number]
-
 export const TUTOR_APPLICATION_STATUS = ['PENDING', 'APPROVED', 'REJECTED'] as const
 export type TutorApplicationStatus = (typeof TUTOR_APPLICATION_STATUS)[number]
 
@@ -143,53 +137,6 @@ export interface ErrorResponse {
 export interface TutorApplicationReviewRequest {
   status: TutorApplicationStatus
   rejectionReason?: string
-}
-
-export interface CourseResponse {
-  id: number
-  title: string
-  description?: string
-  subject: Subject
-  level: Level
-  priceCents: number
-  tutorId: number
-  tutorName: string
-  createdAt: string
-  updatedAt: string
-}
-
-export interface CourseCreateRequest {
-  title: string
-  description?: string
-  subject: Subject
-  level: Level
-  priceCents: number
-}
-
-export interface CourseUpdateRequest {
-  title?: string
-  description?: string
-  subject?: Subject
-  level?: Level
-  priceCents?: number
-}
-
-export interface EnrollmentResponse {
-  id: number
-  userId: number
-  userName: string
-  courseId: number
-  courseTitle: string
-  enrolledAt: string
-  status: EnrollmentStatus
-}
-
-export interface EnrollmentCreateRequest {
-  courseId: number
-}
-
-export interface EnrollmentStatusUpdateRequest {
-  status: EnrollmentStatus
 }
 
 export interface TutoringRequestResponse {

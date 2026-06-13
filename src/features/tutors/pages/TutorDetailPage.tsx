@@ -19,7 +19,6 @@ import {
 import { useMe } from '@/features/me/hooks'
 import { RequestSessionDialog } from '@/features/tutoring-requests/request-session-dialog'
 import { useTutor } from '../hooks'
-import { TutorCoursesList } from '../tutor-courses-list'
 
 export function TutorDetailPage() {
   const { id } = useParams<{ id: string }>()
@@ -91,11 +90,6 @@ export function TutorDetailPage() {
           {tutor.reviewedAt && <Field label="Reviewed" value={formatDateTime(tutor.reviewedAt)} />}
         </CardContent>
       </Card>
-
-      <div className="mt-8">
-        <h2 className="text-lg font-semibold mb-4">Courses by this tutor</h2>
-        <TutorCoursesList tutorId={tutor.id} />
-      </div>
 
       <RequestSessionDialog
         open={requestOpen}

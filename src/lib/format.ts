@@ -1,12 +1,5 @@
 import { format, parseISO } from 'date-fns'
-import type { EnrollmentStatus, Expertise, Level, Subject } from '@/types/api'
-
-export function formatPrice(cents: number): string {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-  }).format(cents / 100)
-}
+import type { Expertise, Subject } from '@/types/api'
 
 export function formatHourlyRate(cents: number): string {
   return new Intl.NumberFormat('en-US', {
@@ -41,6 +34,4 @@ const titleCase = (s: string) =>
     .join(' ')
 
 export const subjectLabel = (s: Subject) => titleCase(s)
-export const levelLabel = (l: Level) => titleCase(l)
 export const expertiseLabel = (e: Expertise) => titleCase(e)
-export const statusLabel = (s: EnrollmentStatus) => titleCase(s)

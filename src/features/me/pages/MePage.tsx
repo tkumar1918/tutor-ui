@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { GraduationCap, Pencil, ShieldCheck } from 'lucide-react'
+import { Inbox, Pencil, ShieldCheck } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -122,9 +122,9 @@ export function MePage() {
                     </Link>
                   </Button>
                   <Button asChild>
-                    <Link to={paths.myCourses}>
-                      <GraduationCap className="size-4" />
-                      My courses
+                    <Link to={paths.tutorInbox}>
+                      <Inbox className="size-4" />
+                      Tutor inbox
                     </Link>
                   </Button>
                 </div>

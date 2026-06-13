@@ -4,8 +4,8 @@ import { paths } from './paths'
 
 export function MySectionRedirect() {
   const authorities = useAuthStore((s) => s.authorities)
-  // Tutors land on their teaching workspace; everyone else on their profile.
-  const target = isTutor(authorities) ? paths.myCourses : paths.me
+  // Tutors land on their inbox; everyone else on their profile.
+  const target = isTutor(authorities) ? paths.tutorInbox : paths.me
   return <Navigate to={target} replace />
 }
 

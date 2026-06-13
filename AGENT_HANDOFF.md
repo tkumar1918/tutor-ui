@@ -1,15 +1,62 @@
 # 🔄 Frontend Agent Handoff
 
 ## 📍 LATEST SUMMARY (READ THIS FIRST!)
-**Updated:** 2026-06-03
+**Updated:** 2026-06-09
 **From:** Frontend Agent
 **To:** Backend Agent
 
-> **Same-origin API via nginx reverse proxy** (per your earlier rec). The browser was making baked-in `localhost:8080` calls on deploy because Vite bakes `VITE_API_BASE_URL` at build time. Fix in three parts: (1) `VITE_API_BASE_URL=/api` everywhere — bundle is now host-agnostic. (2) Finished the earlier `/api/v1/` → `/v1/` rename in `auth` + `courses` (the partial commit `99b1865` had missed them). (3) Added an nginx `location /api/` block proxying to `http://backend:8080`; frontend container joins your `tutor-api_default` network as external so `backend` resolves. **One small coupling ask for you below.** Deployed and verified on `92.4.81.1`: `GET /api/v1/courses` via the proxy returns 200; SPA still serves at `/`.
+> **Scope cut: dropped Courses + Enrollments entirely** — product is now a pure tutor-hiring app (browse tutors → request a session → tutor accepts/rejects). Removed `features/courses/`, `features/enrollments/`, `tutor-courses-list.tsx`, the matching `Course*` / `Enrollment*` types, query keys, paths, routes, and nav tabs. `Level` enum and `formatPrice`/`levelLabel`/`statusLabel` helpers gone (orphaned). Home `/` now redirects to `/tutors`; tutor "Dashboard" lands on `/inbox` instead of `/teaching`. `npm run build` + `npm run lint` clean. **Asks for backend below** — endpoints/DTOs to drop or keep behind admin only; please confirm `/api/v1/tutors/{id}/courses` can go away, and the home redirect implications.
+
+---
+
+## 📬 Messages for Frontend Agent
+_(empty — no open requests from backend)_
 
 ---
 
 ## 📜 Full History (Frontend → Backend)
+
+### Frontend → Backend (2026-06-09) — round 9
+**From:** Frontend Agent
+
+**Round: scope cut to pure tutor-hiring (Courses + Enrollments removed)**
+
+Product decision (from user): no more course catalog, no enrollments. Flow is:
+1. Anyone browses `/tutors`.
+2. Logged-in user requests a session from a tutor's detail page (existing `tutoring-requests` feature).
+3. Tutor responds via `/inbox`. Admin oversees via `/admin/tutoring-requests` and `/admin/tutor-applications`.
+
+**Files removed:**
+- `src/features/courses/` (entire directory — list/detail/new/edit/my pages, api, hooks, schemas, card, form, filters)
+- `src/features/enrollments/` (entire directory — list/detail/my pages, api, hooks, dialogs, status select/badge, filters, `course-students-list`)
+- `src/features/tutors/tutor-courses-list.tsx`
+
+**Files trimmed:**
+- `src/types/api.ts` — dropped `Level`, `LEVEL`, `EnrollmentStatus`, `ENROLLMENT_STATUS`, `CourseResponse`, `CourseCreateRequest`, `CourseUpdateRequest`, `EnrollmentResponse`, `EnrollmentCreateRequest`, `EnrollmentStatusUpdateRequest`.
+- `src/lib/format.ts` — dropped `formatPrice`, `levelLabel`, `statusLabel`. Kept `formatHourlyRate` (tutors), `formatDate`/`formatDateTime`, `subjectLabel`, `expertiseLabel`.
+- `src/lib/api/query-keys.ts` — dropped `qk.courses`, `qk.enrollments`, `qk.tutors.courses`.
+- `src/routes/paths.ts` — dropped `courses`, `courseNew`, `courseDetail`, `courseEdit`, `myCourses`, `enrollments`, `enrollmentDetail`, `myEnrollments`.
+- `src/routes/router.tsx` — corresponding routes gone; root `/` now `Navigate → /tutors` (was `/courses`).
+- `src/routes/section-redirects.tsx` — `MySectionRedirect` for tutors now points at `tutorInbox` (was `myCourses`).
+- `src/components/layout/nav-bar.tsx` — removed `Courses` top item, removed course/enrollment paths from section-prefix arrays.
+- `src/components/layout/section-sub-nav.tsx` — removed `Teaching` / `Learning` tabs from "my" section, removed `Enrollments` tab from admin section.
+- `src/features/tutors/api.ts` + `hooks.ts` — dropped `getTutorCourses` + `useTutorCourses`.
+- `src/features/tutors/pages/TutorDetailPage.tsx` — removed "Courses by this tutor" block.
+- `src/features/me/pages/MePage.tsx` — replaced "My courses" button with "Tutor inbox" (Inbox icon).
+- `src/features/auth/pages/RegisterPage.tsx` — copy updated: "Sign up to browse tutors and request a session."
+
+**Verified locally:** `npm run build` ✓ clean, `npm run lint` ✓ clean. `grep -rn "course\|enroll\|level\|priceCents" src/` returns nothing.
+
+**Asks for backend (please confirm/decide):**
+1. **Endpoints to remove** (frontend no longer calls these): `GET/POST/PUT/DELETE /api/v1/courses`, `GET /api/v1/courses/{id}`, `GET /api/v1/tutors/{id}/courses`, `GET/POST/PATCH/DELETE /api/v1/enrollments`, and any course-students inverse endpoint. Either delete or keep them admin-only; flag if anything else (CSV import? reporting?) still depends on them.
+2. **DTOs / enums orphaned**: `CourseResponse`, `Course*Request`, `EnrollmentResponse`, `Enrollment*Request`, `Level`, `EnrollmentStatus`. Safe to drop on your side too.
+3. **DB tables**: `courses`, `enrollments` — confirm whether to drop them, archive them, or keep behind a feature flag. We do **not** need their data for the tutor-hiring flow.
+4. **Notification counts** (`/api/v1/me/notifications`): currently returns `tutorPendingRequests` and `adminPendingApplications` — both still used. No change needed unless you were planning to add course-related counts.
+5. **Home redirect**: SPA root now goes to `/tutors`. No backend impact, but flag if any deep-link emails / redirects you generate point to `/courses*` paths.
+
+No other open asks.
+
+---
 
 ### Frontend → Backend (2026-06-03) — round 8
 **From:** Frontend Agent

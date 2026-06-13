@@ -4,12 +4,11 @@ import { ApiError } from '@/lib/api/client'
 import { qk } from '@/lib/api/query-keys'
 import {
   getTutor,
-  getTutorCourses,
   listTutors,
   updateMyTutorProfile,
   type ListTutorsParams,
 } from './api'
-import type { Pageable, TutorUpdateRequest } from '@/types/api'
+import type { TutorUpdateRequest } from '@/types/api'
 
 export function useTutorsList(params: ListTutorsParams) {
   return useQuery({
@@ -24,15 +23,6 @@ export function useTutor(id: number | undefined) {
     queryKey: qk.tutors.detail(id ?? -1),
     queryFn: () => getTutor(id as number),
     enabled: id !== undefined,
-  })
-}
-
-export function useTutorCourses(id: number | undefined, pageable: Pageable) {
-  return useQuery({
-    queryKey: qk.tutors.courses(id ?? -1, pageable),
-    queryFn: () => getTutorCourses(id as number, pageable),
-    enabled: id !== undefined,
-    placeholderData: keepPreviousData,
   })
 }
 

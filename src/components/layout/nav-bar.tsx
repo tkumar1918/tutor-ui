@@ -26,16 +26,13 @@ const linkClass = (isActive: boolean) =>
 
 const MY_SECTION_PREFIXES = [
   paths.me,
-  paths.myCourses,
   paths.tutorInbox,
-  paths.myEnrollments,
   paths.myRequests,
   paths.tutorEditMe,
   paths.mySection,
 ]
 
 const ADMIN_SECTION_PREFIXES = [
-  paths.enrollments,
   paths.adminApplications,
   paths.adminRequests,
   paths.adminSection,
@@ -56,7 +53,6 @@ export function NavBar() {
   const applicationsCount = notifications.data?.adminPendingApplications ?? 0
 
   const items: TopItem[] = [
-    { to: paths.courses, label: 'Courses' },
     { to: paths.tutors, label: 'Tutors' },
   ]
   if (token) {

@@ -15,17 +15,14 @@ interface Tab {
 const MY_PROFILE_PATHS = [paths.me, paths.meEdit, paths.applyTutor, paths.tutorEditMe]
 
 const MY_SECTION_PREFIXES = [
-  paths.me, // covers /me, /me/edit, /me/apply-tutor
-  paths.myCourses,
+  paths.me,
   paths.tutorInbox,
-  paths.myEnrollments,
   paths.myRequests,
   paths.tutorEditMe,
   paths.mySection,
 ]
 
 const ADMIN_SECTION_PREFIXES = [
-  paths.enrollments,
   paths.adminApplications,
   paths.adminRequests,
   paths.adminSection,
@@ -51,14 +48,11 @@ export function SectionSubNav() {
 
   const myTabs: Tab[] = []
   if (token) myTabs.push({ to: paths.me, label: 'Profile', matches: MY_PROFILE_PATHS })
-  if (tutor) myTabs.push({ to: paths.myCourses, label: 'Teaching' })
   if (tutor) myTabs.push({ to: paths.tutorInbox, label: 'Inbox', badge: inboxCount })
-  if (token) myTabs.push({ to: paths.myEnrollments, label: 'Learning' })
   if (token) myTabs.push({ to: paths.myRequests, label: 'Requests' })
 
   const adminTabs: Tab[] = [
     { to: paths.adminApplications, label: 'Applications', badge: applicationsCount },
-    { to: paths.enrollments, label: 'Enrollments' },
     { to: paths.adminRequests, label: 'Requests' },
   ]
 

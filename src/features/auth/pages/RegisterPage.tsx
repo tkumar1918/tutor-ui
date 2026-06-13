@@ -8,7 +8,7 @@ export function RegisterPage() {
   return (
     <AuthShell
       title="Create an account"
-      description="Sign up to enroll in courses and manage your learning."
+      description="Sign up to browse tutors and request a session."
       footer={
         <>
           Already have an account?{' '}
