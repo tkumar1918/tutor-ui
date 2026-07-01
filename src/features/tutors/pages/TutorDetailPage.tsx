@@ -18,6 +18,8 @@ import {
 } from '@/lib/format'
 import { useMe } from '@/features/me/hooks'
 import { RequestSessionDialog } from '@/features/tutoring-requests/request-session-dialog'
+import { RatingStars } from '@/features/reviews/rating-stars'
+import { ReviewsSection } from '@/features/reviews/reviews-section'
 import { useTutor } from '../hooks'
 
 export function TutorDetailPage() {
@@ -36,6 +38,7 @@ export function TutorDetailPage() {
   const initials = `${tutor.firstName[0] ?? ''}${tutor.lastName[0] ?? ''}`.toUpperCase()
   const isSelf = me.data?.user.id === tutor.userId
   const canRequest = !!token && !isSelf
+  const hasReviews = tutor.reviewCount > 0 && tutor.averageRating != null
 
   return (
     <>
@@ -62,6 +65,19 @@ export function TutorDetailPage() {
               )
             }
           />
+          <div className="mt-2 flex items-center gap-2 text-sm text-muted-foreground">
+            {hasReviews ? (
+              <>
+                <RatingStars rating={tutor.averageRating!} size="sm" />
+                <span>
+                  {tutor.averageRating!.toFixed(1)} ({tutor.reviewCount} review
+                  {tutor.reviewCount === 1 ? '' : 's'})
+                </span>
+              </>
+            ) : (
+              <span>No reviews yet</span>
+            )}
+          </div>
         </div>
       </div>
 
@@ -90,6 +106,12 @@ export function TutorDetailPage() {
           {tutor.reviewedAt && <Field label="Reviewed" value={formatDateTime(tutor.reviewedAt)} />}
         </CardContent>
       </Card>
+
+      <ReviewsSection
+        tutorId={tutor.id}
+        tutorUserId={tutor.userId}
+        tutorName={`${tutor.firstName} ${tutor.lastName}`}
+      />
 
       <RequestSessionDialog
         open={requestOpen}

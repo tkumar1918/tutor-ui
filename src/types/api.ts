@@ -94,6 +94,8 @@ export interface TutorProfileResponse {
   appliedAt: string
   reviewedAt?: string
   rejectionReason?: string
+  averageRating?: number | null
+  reviewCount: number
   createdAt: string
   updatedAt: string
 }
@@ -167,4 +169,25 @@ export interface TutoringRequestRespondRequest {
 export interface NotificationCountsResponse {
   tutorPendingRequests: number
   adminPendingApplications: number
+}
+
+export interface ReviewResponse {
+  id: number
+  tutorId: number
+  studentId: number
+  studentName: string
+  rating: number
+  comment?: string | null
+  createdAt: string
+  updatedAt: string
+}
+
+export interface ReviewCreateRequest {
+  rating: number
+  comment?: string | null
+}
+
+export interface ReviewUpdateRequest {
+  rating: number
+  comment?: string | null
 }

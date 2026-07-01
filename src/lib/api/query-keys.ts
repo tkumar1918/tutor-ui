@@ -36,4 +36,9 @@ export const qk = {
     }) => [...qk.tutoringRequests.all, 'admin', params] as const,
     detail: (id: number) => [...qk.tutoringRequests.all, 'detail', id] as const,
   },
+  reviews: {
+    all: ['reviews'] as const,
+    forTutor: (tutorId: number, pageable: Pageable) =>
+      [...qk.reviews.all, 'tutor', tutorId, pageable] as const,
+  },
 }
